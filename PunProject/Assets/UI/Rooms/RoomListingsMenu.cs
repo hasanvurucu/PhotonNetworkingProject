@@ -12,9 +12,20 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
     private RoomListing _roomListing;
 
     private List<RoomListing> _listings = new List<RoomListing>();
+    private RoomsCanvases _roomCanvases;
+
+    public void FirstInitialize(RoomsCanvases canvases)
+    {
+        _roomCanvases = canvases;
+    }
+
+    public override void OnJoinedRoom()
+    {
+        _roomCanvases.CurrentRoomCanvas.Show();
+    }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        foreach(Room info in roomList)
+        foreach(RoomInfo info in roomList)
         {
             //removed from rooms list
             if (info.RemovedFromList)
