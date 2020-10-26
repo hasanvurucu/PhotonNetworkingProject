@@ -12,11 +12,40 @@ public class PlayerListingsMenu : MonoBehaviourPunCallbacks
     private PlayerListing _playerListing;
 
     private List<PlayerListing> _listings = new List<PlayerListing>();
+    private RoomsCanvases _roomsCanvases;
+    //private bool _ready = false;
 
-    private void Awake()
+    public override void OnEnable()
     {
+        base.OnEnable();
+        //SetReadyUp(false);
         GetCurrentRoomPlayers();
     }
+
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        for(int i = 0; i < _listings.Count; i++)
+        {
+            Destroy(_listings[i].gameObject);
+        }
+
+        _listings.Clear();
+    }
+
+    public void FirstInitialize(RoomsCanvases canvases)
+    {
+        _roomsCanvases = canvases;
+    }
+
+    /*private void SetReadyUp(bool state)
+    {
+        _ready = state;
+        if (_ready)
+            _readyUpText.text = "R";
+        else
+            _readyUpText.text = "N";
+    } */
 
     private void GetCurrentRoomPlayers()
     {
@@ -28,11 +57,19 @@ public class PlayerListingsMenu : MonoBehaviourPunCallbacks
 
     private void AddPlayerListing(Player player)
     {
-        PlayerListing listing = Instantiate(_playerListing, _content);
-        if (listing != null)
+        int index = _listings.FindIndex(x => x.Player == player);
+        if (index != -1)
         {
-            listing.SetPlayerInfo(player);
-            _listings.Add(listing);
+            _listings[index].SetPlayerInfo(player);
+        }
+        else
+        {
+            PlayerListing listing = Instantiate(_playerListing, _content);
+            if (listing != null)
+            {
+                listing.SetPlayerInfo(player);
+                _listings.Add(listing);
+            }
         }
     }
     public override void OnPlayerEnteredRoom(Player newPlayer)
