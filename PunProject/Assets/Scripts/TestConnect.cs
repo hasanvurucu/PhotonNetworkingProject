@@ -9,6 +9,7 @@ public class TestConnect : MonoBehaviourPunCallbacks
     void Start()
     {
         print("Connecting to server...");
+        PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.NickName = MasterManager.GameSettings.NickName;
         PhotonNetwork.GameVersion = MasterManager.GameSettings.GameVersion;
         PhotonNetwork.GameVersion = "0.0.1"; //When the game version is updated within the game, this will prevent players to play across different versions
